@@ -235,12 +235,24 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
     }
     // If the object should be rendered as a div
     else {
-      this.defaultProperties = this.schema.defaultProperties || Object.keys(this.schema.properties);
+      if(!this.schema.defaultProperties) {
+        if(this.jsoneditor.options.display_required_only || this.options.display_required_only) {
+          this.schema.defaultProperties = [];
+          $each(this.schema.properties, function(k,s) {
+            if(self.isRequired({key: k, schema: s})) {
+              self.schema.defaultProperties.push(k);
+            }
+          });
+        }
+        else {
+          self.schema.defaultProperties = Object.keys(self.schema.properties);
+        }
+      }
 
       // Increase the grid width to account for padding
       self.maxwidth += 1;
 
-      $each(this.defaultProperties, function(i,key) {
+      $each(this.schema.defaultProperties, function(i,key) {
         self.addObjectProperty(key, true);
 
         if(self.editors[key]) {
@@ -395,7 +407,7 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
 
       // Show/Hide button
       this.collapsed = false;
-      this.toggle_button = this.getButton('','collapse','Collapse');
+      this.toggle_button = this.getButton('','collapse',this.translate('button_collapse'));
       this.title_controls.appendChild(this.toggle_button);
       this.toggle_button.addEventListener('click',function(e) {
         e.preventDefault();
@@ -403,12 +415,12 @@ JSONEditor.defaults.editors.object = JSONEditor.AbstractEditor.extend({
         if(self.collapsed) {
           self.editor_holder.style.display = '';
           self.collapsed = false;
-          self.setButtonText(self.toggle_button,'','collapse','Collapse');
+          self.setButtonText(self.toggle_button,'','collapse',self.translate('button_collapse'));
         }
         else {
           self.editor_holder.style.display = 'none';
           self.collapsed = true;
-          self.setButtonText(self.toggle_button,'','expand','Expand');
+          self.setButtonText(self.toggle_button,'','expand',self.translate('button_expand'));
         }
       });
 

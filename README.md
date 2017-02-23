@@ -16,11 +16,7 @@ Download the [production version][min] (22K when gzipped) or the [development ve
 Requirements
 -----------------
 
-JSON Schema has the following dependencies:
-
-* [math.js](http://mathjs.org/) for floating point math
-
-It needs a modern browser (tested in Chrome and Firefox).
+JSON Editor has no dependencies. It only needs a modern browser (tested in Chrome and Firefox).
 
 ### Optional Requirements
 
@@ -34,6 +30,7 @@ The following are not required, but can improve the style and usability of JSON 
 *  [Ace Editor](http://ace.c9.io/) for editing code
 *  [Select2](http://ivaynberg.github.io/select2/) for nicer Select boxes
 *  [Selectize](http://brianreavis.github.io/selectize.js/) for nicer Select & Array boxes
+*  [math.js](http://mathjs.org/) for more accurate floating point math (multipleOf, divisibleBy, etc.)
 
 Usage
 --------------
@@ -169,6 +166,11 @@ Here are all the available options:
     <td>theme</td>
     <td>The CSS theme to use.  See the <strong>CSS Integration</strong> section below for more info.</td>
     <td><code>html</code></td>
+  </tr>
+  <tr>
+    <td>display_required_only</td>
+    <td>If <code>true</code>, only required properties will be included by default.</td>
+    <td><code>false</code></td>
   </tr>
   </tbody>
 </table>
@@ -421,7 +423,9 @@ Simple text link
   "links": [
     {
       "rel": "comments",
-      "href": "/posts/{{self}}/comments/"
+      "href": "/posts/{{self}}/comments/",
+      // Optional - set CSS classes for the link
+      "class": "comment-link open-in-modal primary-text"
     }
   ]
 }

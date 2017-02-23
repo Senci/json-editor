@@ -97,6 +97,7 @@ JSONEditor.AbstractEditor = Class.extend({
         path = this.schema.watch[name];
 
         if(Array.isArray(path)) {
+          if(path.length<2) continue;
           path_parts = [path[0]].concat(path[1].split('.'));
         }
         else {
@@ -247,6 +248,8 @@ JSONEditor.AbstractEditor = Class.extend({
         });
       }
     }
+    
+    if(data.class) link.className = link.className + ' ' + data.class;
 
     return holder;
   },
